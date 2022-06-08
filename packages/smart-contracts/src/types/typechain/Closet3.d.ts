@@ -35,13 +35,11 @@ interface Closet3Interface extends ethers.utils.Interface {
     'erc20()': FunctionFragment;
     'existingTokenIds(uint256)': FunctionFragment;
     'exists(uint256)': FunctionFragment;
-    'getActiveTokens()': FunctionFragment;
     'getAllTokenIds()': FunctionFragment;
-    'getAllTokens()': FunctionFragment;
     'getTokenById(uint256)': FunctionFragment;
-    'getTokensByWallet(address)': FunctionFragment;
     'initialize()': FunctionFragment;
     'isApprovedForAll(address,address)': FunctionFragment;
+    'loadCloset(uint8,uint8)': FunctionFragment;
     'maxTokensPerWalletById(uint256,address)': FunctionFragment;
     'mint(uint256,uint256)': FunctionFragment;
     'mintBatch(uint256[],uint256[])': FunctionFragment;
@@ -66,7 +64,6 @@ interface Closet3Interface extends ethers.utils.Interface {
     'upgradeTo(address)': FunctionFragment;
     'upgradeToAndCall(address,bytes)': FunctionFragment;
     'uri(uint256)': FunctionFragment;
-    'version()': FunctionFragment;
     'walletBans(address)': FunctionFragment;
   };
 
@@ -143,24 +140,12 @@ interface Closet3Interface extends ethers.utils.Interface {
     values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: 'getActiveTokens',
-    values?: undefined,
-  ): string;
-  encodeFunctionData(
     functionFragment: 'getAllTokenIds',
-    values?: undefined,
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'getAllTokens',
     values?: undefined,
   ): string;
   encodeFunctionData(
     functionFragment: 'getTokenById',
     values: [BigNumberish],
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'getTokensByWallet',
-    values: [string],
   ): string;
   encodeFunctionData(
     functionFragment: 'initialize',
@@ -169,6 +154,10 @@ interface Closet3Interface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: 'isApprovedForAll',
     values: [string, string],
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'loadCloset',
+    values: [BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
     functionFragment: 'maxTokensPerWalletById',
@@ -245,7 +234,6 @@ interface Closet3Interface extends ethers.utils.Interface {
     values: [string, BytesLike],
   ): string;
   encodeFunctionData(functionFragment: 'uri', values: [BigNumberish]): string;
-  encodeFunctionData(functionFragment: 'version', values?: undefined): string;
   encodeFunctionData(functionFragment: 'walletBans', values: [string]): string;
 
   decodeFunctionResult(
@@ -283,23 +271,11 @@ interface Closet3Interface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: 'exists', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'getActiveTokens',
-    data: BytesLike,
-  ): Result;
-  decodeFunctionResult(
     functionFragment: 'getAllTokenIds',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'getAllTokens',
-    data: BytesLike,
-  ): Result;
-  decodeFunctionResult(
     functionFragment: 'getTokenById',
-    data: BytesLike,
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'getTokensByWallet',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
@@ -307,6 +283,7 @@ interface Closet3Interface extends ethers.utils.Interface {
     functionFragment: 'isApprovedForAll',
     data: BytesLike,
   ): Result;
+  decodeFunctionResult(functionFragment: 'loadCloset', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'maxTokensPerWalletById',
     data: BytesLike,
@@ -376,7 +353,6 @@ interface Closet3Interface extends ethers.utils.Interface {
     data: BytesLike,
   ): Result;
   decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'version', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'walletBans', data: BytesLike): Result;
 
   events: {
@@ -719,95 +695,7 @@ export class Closet3 extends BaseContract {
 
     exists(id: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>;
 
-    getActiveTokens(overrides?: CallOverrides): Promise<
-      [
-        ([
-          BigNumber,
-          [
-            string,
-            BigNumber,
-            BigNumber,
-            BigNumber,
-            boolean,
-            string,
-            [BigNumber, BigNumber],
-          ] & {
-            name: string;
-            cost: BigNumber;
-            maxTokens: BigNumber;
-            maxPerWallet: BigNumber;
-            active: boolean;
-            revShareAddress: string;
-            revShareAmount: [BigNumber, BigNumber];
-          },
-        ] & {
-          id: BigNumber;
-          token: [
-            string,
-            BigNumber,
-            BigNumber,
-            BigNumber,
-            boolean,
-            string,
-            [BigNumber, BigNumber],
-          ] & {
-            name: string;
-            cost: BigNumber;
-            maxTokens: BigNumber;
-            maxPerWallet: BigNumber;
-            active: boolean;
-            revShareAddress: string;
-            revShareAmount: [BigNumber, BigNumber];
-          };
-        })[],
-      ]
-    >;
-
     getAllTokenIds(overrides?: CallOverrides): Promise<[BigNumber[]]>;
-
-    getAllTokens(overrides?: CallOverrides): Promise<
-      [
-        ([
-          BigNumber,
-          [
-            string,
-            BigNumber,
-            BigNumber,
-            BigNumber,
-            boolean,
-            string,
-            [BigNumber, BigNumber],
-          ] & {
-            name: string;
-            cost: BigNumber;
-            maxTokens: BigNumber;
-            maxPerWallet: BigNumber;
-            active: boolean;
-            revShareAddress: string;
-            revShareAmount: [BigNumber, BigNumber];
-          },
-        ] & {
-          id: BigNumber;
-          token: [
-            string,
-            BigNumber,
-            BigNumber,
-            BigNumber,
-            boolean,
-            string,
-            [BigNumber, BigNumber],
-          ] & {
-            name: string;
-            cost: BigNumber;
-            maxTokens: BigNumber;
-            maxPerWallet: BigNumber;
-            active: boolean;
-            revShareAddress: string;
-            revShareAmount: [BigNumber, BigNumber];
-          };
-        })[],
-      ]
-    >;
 
     getTokenById(
       id: BigNumberish,
@@ -834,12 +722,24 @@ export class Closet3 extends BaseContract {
       ]
     >;
 
-    getTokensByWallet(
-      wallet: string,
+    initialize(
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>;
+
+    isApprovedForAll(
+      account: string,
+      operator: string,
+      overrides?: CallOverrides,
+    ): Promise<[boolean]>;
+
+    loadCloset(
+      limit: BigNumberish,
+      offset: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<
       [
         ([
+          BigNumber,
           BigNumber,
           BigNumber,
           [
@@ -861,6 +761,7 @@ export class Closet3 extends BaseContract {
           },
         ] & {
           id: BigNumber;
+          supply: BigNumber;
           amount: BigNumber;
           token: [
             string,
@@ -882,16 +783,6 @@ export class Closet3 extends BaseContract {
         })[],
       ]
     >;
-
-    initialize(
-      overrides?: Overrides & { from?: string | Promise<string> },
-    ): Promise<ContractTransaction>;
-
-    isApprovedForAll(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides,
-    ): Promise<[boolean]>;
 
     maxTokensPerWalletById(
       arg0: BigNumberish,
@@ -1018,8 +909,6 @@ export class Closet3 extends BaseContract {
 
     uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
 
-    version(overrides?: CallOverrides): Promise<[string]>;
-
     walletBans(
       arg0: string,
       overrides?: CallOverrides,
@@ -1103,91 +992,7 @@ export class Closet3 extends BaseContract {
 
   exists(id: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
-  getActiveTokens(overrides?: CallOverrides): Promise<
-    ([
-      BigNumber,
-      [
-        string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        boolean,
-        string,
-        [BigNumber, BigNumber],
-      ] & {
-        name: string;
-        cost: BigNumber;
-        maxTokens: BigNumber;
-        maxPerWallet: BigNumber;
-        active: boolean;
-        revShareAddress: string;
-        revShareAmount: [BigNumber, BigNumber];
-      },
-    ] & {
-      id: BigNumber;
-      token: [
-        string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        boolean,
-        string,
-        [BigNumber, BigNumber],
-      ] & {
-        name: string;
-        cost: BigNumber;
-        maxTokens: BigNumber;
-        maxPerWallet: BigNumber;
-        active: boolean;
-        revShareAddress: string;
-        revShareAmount: [BigNumber, BigNumber];
-      };
-    })[]
-  >;
-
   getAllTokenIds(overrides?: CallOverrides): Promise<BigNumber[]>;
-
-  getAllTokens(overrides?: CallOverrides): Promise<
-    ([
-      BigNumber,
-      [
-        string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        boolean,
-        string,
-        [BigNumber, BigNumber],
-      ] & {
-        name: string;
-        cost: BigNumber;
-        maxTokens: BigNumber;
-        maxPerWallet: BigNumber;
-        active: boolean;
-        revShareAddress: string;
-        revShareAmount: [BigNumber, BigNumber];
-      },
-    ] & {
-      id: BigNumber;
-      token: [
-        string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        boolean,
-        string,
-        [BigNumber, BigNumber],
-      ] & {
-        name: string;
-        cost: BigNumber;
-        maxTokens: BigNumber;
-        maxPerWallet: BigNumber;
-        active: boolean;
-        revShareAddress: string;
-        revShareAmount: [BigNumber, BigNumber];
-      };
-    })[]
-  >;
 
   getTokenById(
     id: BigNumberish,
@@ -1212,11 +1017,23 @@ export class Closet3 extends BaseContract {
     }
   >;
 
-  getTokensByWallet(
-    wallet: string,
+  initialize(
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>;
+
+  isApprovedForAll(
+    account: string,
+    operator: string,
+    overrides?: CallOverrides,
+  ): Promise<boolean>;
+
+  loadCloset(
+    limit: BigNumberish,
+    offset: BigNumberish,
     overrides?: CallOverrides,
   ): Promise<
     ([
+      BigNumber,
       BigNumber,
       BigNumber,
       [
@@ -1238,6 +1055,7 @@ export class Closet3 extends BaseContract {
       },
     ] & {
       id: BigNumber;
+      supply: BigNumber;
       amount: BigNumber;
       token: [
         string,
@@ -1258,16 +1076,6 @@ export class Closet3 extends BaseContract {
       };
     })[]
   >;
-
-  initialize(
-    overrides?: Overrides & { from?: string | Promise<string> },
-  ): Promise<ContractTransaction>;
-
-  isApprovedForAll(
-    account: string,
-    operator: string,
-    overrides?: CallOverrides,
-  ): Promise<boolean>;
 
   maxTokensPerWalletById(
     arg0: BigNumberish,
@@ -1391,8 +1199,6 @@ export class Closet3 extends BaseContract {
 
   uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  version(overrides?: CallOverrides): Promise<string>;
-
   walletBans(
     arg0: string,
     overrides?: CallOverrides,
@@ -1476,91 +1282,7 @@ export class Closet3 extends BaseContract {
 
     exists(id: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
-    getActiveTokens(overrides?: CallOverrides): Promise<
-      ([
-        BigNumber,
-        [
-          string,
-          BigNumber,
-          BigNumber,
-          BigNumber,
-          boolean,
-          string,
-          [BigNumber, BigNumber],
-        ] & {
-          name: string;
-          cost: BigNumber;
-          maxTokens: BigNumber;
-          maxPerWallet: BigNumber;
-          active: boolean;
-          revShareAddress: string;
-          revShareAmount: [BigNumber, BigNumber];
-        },
-      ] & {
-        id: BigNumber;
-        token: [
-          string,
-          BigNumber,
-          BigNumber,
-          BigNumber,
-          boolean,
-          string,
-          [BigNumber, BigNumber],
-        ] & {
-          name: string;
-          cost: BigNumber;
-          maxTokens: BigNumber;
-          maxPerWallet: BigNumber;
-          active: boolean;
-          revShareAddress: string;
-          revShareAmount: [BigNumber, BigNumber];
-        };
-      })[]
-    >;
-
     getAllTokenIds(overrides?: CallOverrides): Promise<BigNumber[]>;
-
-    getAllTokens(overrides?: CallOverrides): Promise<
-      ([
-        BigNumber,
-        [
-          string,
-          BigNumber,
-          BigNumber,
-          BigNumber,
-          boolean,
-          string,
-          [BigNumber, BigNumber],
-        ] & {
-          name: string;
-          cost: BigNumber;
-          maxTokens: BigNumber;
-          maxPerWallet: BigNumber;
-          active: boolean;
-          revShareAddress: string;
-          revShareAmount: [BigNumber, BigNumber];
-        },
-      ] & {
-        id: BigNumber;
-        token: [
-          string,
-          BigNumber,
-          BigNumber,
-          BigNumber,
-          boolean,
-          string,
-          [BigNumber, BigNumber],
-        ] & {
-          name: string;
-          cost: BigNumber;
-          maxTokens: BigNumber;
-          maxPerWallet: BigNumber;
-          active: boolean;
-          revShareAddress: string;
-          revShareAmount: [BigNumber, BigNumber];
-        };
-      })[]
-    >;
 
     getTokenById(
       id: BigNumberish,
@@ -1585,11 +1307,21 @@ export class Closet3 extends BaseContract {
       }
     >;
 
-    getTokensByWallet(
-      wallet: string,
+    initialize(overrides?: CallOverrides): Promise<void>;
+
+    isApprovedForAll(
+      account: string,
+      operator: string,
+      overrides?: CallOverrides,
+    ): Promise<boolean>;
+
+    loadCloset(
+      limit: BigNumberish,
+      offset: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<
       ([
+        BigNumber,
         BigNumber,
         BigNumber,
         [
@@ -1611,6 +1343,7 @@ export class Closet3 extends BaseContract {
         },
       ] & {
         id: BigNumber;
+        supply: BigNumber;
         amount: BigNumber;
         token: [
           string,
@@ -1631,14 +1364,6 @@ export class Closet3 extends BaseContract {
         };
       })[]
     >;
-
-    initialize(overrides?: CallOverrides): Promise<void>;
-
-    isApprovedForAll(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides,
-    ): Promise<boolean>;
 
     maxTokensPerWalletById(
       arg0: BigNumberish,
@@ -1750,8 +1475,6 @@ export class Closet3 extends BaseContract {
     ): Promise<void>;
 
     uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-    version(overrides?: CallOverrides): Promise<string>;
 
     walletBans(
       arg0: string,
@@ -2283,19 +2006,10 @@ export class Closet3 extends BaseContract {
 
     exists(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    getActiveTokens(overrides?: CallOverrides): Promise<BigNumber>;
-
     getAllTokenIds(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getAllTokens(overrides?: CallOverrides): Promise<BigNumber>;
 
     getTokenById(
       id: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<BigNumber>;
-
-    getTokensByWallet(
-      wallet: string,
       overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
@@ -2306,6 +2020,12 @@ export class Closet3 extends BaseContract {
     isApprovedForAll(
       account: string,
       operator: string,
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>;
+
+    loadCloset(
+      limit: BigNumberish,
+      offset: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
@@ -2434,8 +2154,6 @@ export class Closet3 extends BaseContract {
 
     uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    version(overrides?: CallOverrides): Promise<BigNumber>;
-
     walletBans(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
   };
 
@@ -2520,19 +2238,10 @@ export class Closet3 extends BaseContract {
       overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    getActiveTokens(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     getAllTokenIds(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getAllTokens(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getTokenById(
       id: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<PopulatedTransaction>;
-
-    getTokensByWallet(
-      wallet: string,
       overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
@@ -2543,6 +2252,12 @@ export class Closet3 extends BaseContract {
     isApprovedForAll(
       account: string,
       operator: string,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>;
+
+    loadCloset(
+      limit: BigNumberish,
+      offset: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
@@ -2673,8 +2388,6 @@ export class Closet3 extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
-
-    version(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     walletBans(
       arg0: string,
